@@ -9,14 +9,15 @@ import java.util.Scanner;
 public class Client {
     private List<List<String>> input = new ArrayList<>();
 
+    // Constructor
     public Client() {
         Scanner inputStream;
 
-        try{
+        try {
             File file= new File("FloridaCounties.csv");
             inputStream = new Scanner(file);
 
-            while(inputStream.hasNextLine()){
+            while (inputStream.hasNextLine()) {
                 String line= inputStream.nextLine();
                 String[] values = line.split(",");
                 input.add(Arrays.asList(values));
