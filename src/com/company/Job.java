@@ -1,15 +1,19 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Job implements Runnable {
 
     private Record record;
     private List<String> recordArray;
+    private static ConcurrentHashMap<String, ArrayList<String>> houseTypes;
 
     // Constructor
-    public Job(List<String> recordArray) {
+    public Job(List<String> recordArray, ConcurrentHashMap<String, ArrayList<String>> houseTypes) {
         this.recordArray = recordArray;
+        this.houseTypes = houseTypes;
     }
 
     public void TaskOne() {
@@ -30,6 +34,27 @@ public class Job implements Runnable {
 
     public void TaskFour() {
 
+        // Check if hash map already contains the line key
+        if (this.houseTypes.containsKey(this.record.getLine())) {
+
+            // Add the construction if not already in the list
+            if (!this.houseTypes.get(this.record.getLine()).contains(this.record.getConstruction())) {
+                this.houseTypes.get(this.record.getLine()).add(this.record.getConstruction());
+            }
+        }
+
+        // Add a new key and list otherwise
+        else {
+            ArrayList<String> newConstruction = new ArrayList<>();
+            newConstruction.add(this.record.getConstruction());
+            this.houseTypes.put(this.record.getLine(), newConstruction);
+        }
+
+        int houseTypeCount = 0;
+        for (ArrayList<String> currentList : this.houseTypes.values()) {
+            houseTypeCount += currentList.size();
+        }
+        System.out.println(houseTypeCount);
     }
 
     public void TaskFive() {
